@@ -1,0 +1,24 @@
+extends ../femto/lib-style/src/components/base
+include ../femto/lib-style/src/components/blank
+
+block body
+  +blank(props)
+    section
+      +user_selector_popup(props)
+
+      if users.current()
+        form(action="/update_account_details" method="post")
+          fieldset
+            label(for="username") Username
+            input#username(name="username" type="text" placeholder="Username" value=users.current().username)
+            label(for="email") Email
+            input#username(name="email" type="text" placeholder="Set an email to reset your password at a later date.  We won't use it for anything beyond security." value=users.current().email)
+            input(type="submit" value="Update Details")
+
+        form(action="/update_account_password" method="post")
+          fieldset
+            label(for="password") Current Password
+            input#username(name="password" type="password" placeholder="Current Password")
+            label(for="new_password") New Password
+            input#username(name="new_password" type="password" placeholder="New Password")
+            input(type="submit" value="Update Password")

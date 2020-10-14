@@ -1,0 +1,71 @@
+extends ../femto/lib-style/src/components/base
+include ../femto/lib-style/src/components/blank
+
+block body
+    style.
+        .lbtn.lbtn-discord.white {
+            color: #7289DA;
+            border-color: #b9b9b9;
+        }
+
+        .lbtn {
+            flex-direction: row;
+            font-weight: 700;
+            border-radius: 8px;
+            border-style: solid;
+            border-width: 1px;
+            display: flex;
+            height: 64px;
+            flex: initial;
+            margin: 10px;
+            width: 300px;
+        }
+
+        .lbtn.lbtn-discord .logo {
+            background: url(/public/logos/discord.svg);
+        }
+
+        .lbtn .logo {
+            width: 64px;
+            flex: initial;
+            display: flex;
+            position: relative;
+            background-color: inherit;
+        }
+
+        .lbtn .label {
+            text-align: center;
+            flex: 1;
+            margin: 0;
+            align-items: center;
+            justify-content: center;
+            border-left: 1px solid;
+                border-left-color: currentcolor;
+            display: flex;
+            border-color: inherit;
+        }
+        p.label, select {
+            text-transform: capitalize;
+        }
+
+
+    +blank(props)
+        h1 Login
+        p Want an account? #[a(href='/register') Register here.]    
+        form(action="/login" method="post")
+            label(for="username") Username
+            input(type="text" name="username")
+            br
+            label(for="password") Password
+            input(type="password" name="password")
+            br
+            input(type="submit" value="Login")
+
+        hr(class='center-ball')
+
+        a(href='/oauth/discord')
+            row
+                column
+                    logo.discord
+                        i.logo
+                        p.label Login with Discord

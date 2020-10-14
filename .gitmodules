@@ -1,0 +1,3 @@
+[submodule "femto/lib-style"]
+	path = femto/lib-style
+	url = https://github.com/femto-apps/lib-style

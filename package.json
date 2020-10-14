@@ -1,0 +1,27 @@
+{
+  "name": "web-authentication-provider-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@femto-apps/config": "^4.0.0",
+    "@femto-apps/verify": "git+https://github.com/femto-apps/lib-verify.git",
+    "@femto-host/config": "^1.0.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "client-oauth2": "^4.3.3",
+    "connect-mongo": "^3.2.0",
+    "email-validator": "^2.0.4",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mongoose": "^5.10.9",
+    "node-fetch": "^2.6.1",
+    "pug": "^3.0.0"
+  }
+}
