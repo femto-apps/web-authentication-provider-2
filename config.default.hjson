@@ -2,14 +2,14 @@
     name: Web Authentication Provider
     discord: {
         clientId: "764615973553963019"
-        clientSecret: jy0KfWmmExwPi5D0EKvsgHjwmO0eJ45O
+        clientSecret: g489534ht8934hgw389gh9gwg
         redirectUri: http://localhost:9432/oauth/discord/callback
     }
     mongoose: {
         database: webAuthenticationProvider
     }
     session: {
-        secret: g4398gh43a98gh4a89
+        secret: 34g34g43ag43ag34a
         name: web-authentication-provider
     }
 }
