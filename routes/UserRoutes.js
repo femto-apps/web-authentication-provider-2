@@ -53,11 +53,13 @@ class UserRoutes {
         const user = await UserModel.findOne({ username })
     
         if (!user) {
-            return res.send('user not found')
+            res.locals.errors.push({ display: 'no user with that username' })
+            return UserRoutes.getLogin(req, res)
         }
         
         if (!(await user.compare(password))) {
-            return res.send('incorrect password')
+            res.locals.errors.push({ display: 'incorrect password' })
+            return UserRoutes.getLogin(req, res)
         }
     
         await req.users.login(user)
@@ -76,17 +78,20 @@ class UserRoutes {
 
         const existingUser = await UserModel.findOne({ username })
         if (existingUser) {
-            return res.send('username already exists')
+            res.locals.errors.push({ display: 'username already exists' })
+            return UserRoutes.getRegister(req, res)
         }
     
         if (username.startsWith('discord://')) {
-            return res.send('cannot start username with discord://')
+            res.locals.errors.push({ display: 'usernames cannot begin with discord://' })
+            return UserRoutes.getRegister(req, res)
         }
     
         if (email && email !== '') {
             // if email is undefined, don't check it!
             if (!emailValidator.validate(email)) {
-                return res.send('email validation failed')
+                res.locals.errors.push({ display: 'email is invalid, must be either valid or blank' })
+                return UserRoutes.getRegister(req, res)
             }
         }
     
@@ -96,7 +101,8 @@ class UserRoutes {
         ])
     
         if (passwordVerification) {
-            return res.send('password verification failed')
+            res.locals.errors.push({ display: 'password verification failed' })
+            return UserRoutes.getRegister(req, res)
         }
     
         const user = new UserModel({
@@ -115,12 +121,43 @@ class UserRoutes {
         const user = await UserModel.findOne({ _id: id })
         
         if (!(await req.users.isAuthenticatedAs(user))) {
-            return res.send('not logged in as that user.')
+            res.locals.errors.push({ display: 'you are not authenticated as that user' })
+            return UserRoutes.getHomepage(req, res)
         }
     
         await req.users.switch(user)
     
         res.redirect('/')
+    }
+
+    static async putUser(req, res) {
+        const { username, email, password, new_password } = req.body
+
+        const user = req.users.current()
+        if (username) { user.username = username }
+        if (email && email !== '') { user.email = email }
+        if (new_password) {
+            if (await user.compare(password)) {
+                user.password = password
+            } else {
+                res.locals.errors.push({ display: 'invalid current password' })
+                return UserRoutes.getHomepage(req, res)
+            }
+        }
+
+        try {
+            await user.save()
+        } catch(e) {
+            if (e.code === 11000 && e.keyPattern.username) {
+                res.locals.errors.push({ display: 'cannot update user to a username that already exists' })
+                return UserRoutes.getHomepage(req, res)
+            }
+
+            res.locals.errors.push({ display: 'failed to save user record to database' })
+            return UserRoutes.getHomepage(req, res)
+        }
+
+        return res.redirect('/')
     }
 
     static async getLogout(req, res) {

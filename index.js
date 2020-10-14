@@ -38,6 +38,12 @@ app.use(session({
 }))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(UserManager.middleware)
+app.use((req, res, next) => {
+    res.locals.errors = []
+    res.locals.form = {}
+    res.locals.form = req.body || {}
+    next()
+})
 
 app.get('/', UserRoutes.getHomepage)
 
@@ -48,6 +54,8 @@ app.get('/register', UserRoutes.getRegister)
 app.post('/register', UserRoutes.postRegister)
 
 app.get('/switch', UserRoutes.getSwitch)
+
+app.post('/user', UserRoutes.putUser)
 
 app.get('/logout', UserRoutes.getLogout)
 app.get('/logoutAll', UserRoutes.getLogoutAll)

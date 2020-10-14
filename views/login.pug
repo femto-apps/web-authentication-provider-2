@@ -1,16 +1,19 @@
 extends ../femto/lib-style/src/components/base
 include ../femto/lib-style/src/components/blank
+include ../femto/lib-style/src/components/flash
 
 block body
     +blank(props)
         h1 Login
-        p Want an account? #[a(href='/register') Register here.]    
+        p Want an account? #[a(href='/register') Register here.]
+        
+        +flash(flash)
         form(action="/login" method="post")
             label(for="username") Username
-            input(type="text" name="username")
+            input(type="text" name="username" value=form.username)
             br
             label(for="password") Password
-            input(type="password" name="password")
+            input(type="password" name="password" value=form.password)
             br
             input(type="submit" value="Login")
 
